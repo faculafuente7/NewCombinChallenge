@@ -48,9 +48,12 @@ export async function uploadUser(user){
         }
         try{
             const response = await axios.post(MEMBERS,user, config)
+            console.log(response)
             store.dispatch(UPLOAD_USER(user))
+            return response
         } catch (err){
             console.log(err)
+            return err.response.data.message
         }
 
     }

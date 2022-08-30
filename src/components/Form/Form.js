@@ -5,9 +5,21 @@ import {useSelector} from 'react-redux'
 
 const Form = () => {
     const { register, handleSubmit, formState: { errors, isValid, isDirty }, reset } = useForm();
+    const [error, setError] = useState(false)
+    const [succefulSubmit, setSuccefulSubmit] = useState(false)
 
-    const onSubmit = (user) => {
-        uploadUser(user)    
+    const onSubmit = async (user) => {
+
+        const response = await uploadUser(user)
+
+        if(response.status == 200){
+            setSuccefulSubmit(true)
+            setError(false)
+        } else {
+            setError(`Error! ${response}`)
+        }
+
+          
     }
 
 
@@ -93,6 +105,8 @@ const Form = () => {
                 <button onClick={() => reset()} >Reset Form</button>
                 <input  type="submit" />
             </div>
+            {succefulSubmit && <p className="succeful" >El usuario se cargó con éxito</p>}
+            {error && <p  >{error}</p>}
         </form>
     )
 }
